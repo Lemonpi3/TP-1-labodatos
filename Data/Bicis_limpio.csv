@@ -1,4 +1,4 @@
-"Id_recorrido","duracion_recorrido","fecha_origen_recorrido","nombre_estacion_origen","long_estacion_origen","lat_estacion_origen","fecha_destino_recorrido","nombre_estacion_destino","long_estacion_destino","lat_estacion_destino","id_usuario","modelo_bicicleta","Género","fecha"
+"id_recorrido","duracion_recorrido","fecha_origen_recorrido","nombre_estacion_origen","long_estacion_origen","lat_estacion_origen","fecha_destino_recorrido","nombre_estacion_destino","long_estacion_destino","lat_estacion_destino","id_usuario","modelo_bicicleta","genero","fecha"
 "15242490BAEcobici",2262,2022-08-14 18:16:59,"095 - ESMERALDA",-58.3781678,-34.6021121,2022-08-14 18:54:41,"051 - TUCUMAN",-58.3821261,-34.6014776,"882278BAEcobici","FIT","MALE",2022-08-14
 "16737944BAEcobici",728,2022-12-25 15:57:31,"371 - Paseo de las Americas",-58.43522348866,-34.5530794109,2022-12-25 16:09:39,"250 - Fleni",-58.450479,-34.555602,"883125BAEcobici","ICONIC","MALE",2022-12-25
 "15315476BAEcobici",414,2022-08-22 14:12:37,"132 - CORRIENTES",-58.372763,-34.6033685,2022-08-22 14:19:31,"038 - Plaza Libertad",-58.3828403,-34.5970497,"739385BAEcobici","ICONIC","MALE",2022-08-22
