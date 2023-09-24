@@ -8,7 +8,11 @@ df_bici = df_bici %>%
       (duracion_recorrido <= 3600)
   ) %>%
   mutate(
-    Género = if_else(is.na(Género), "OTHER", Género)
+    Género = if_else(is.na(Género), "OTHER", Género),
+    nombre_estacion_origen = gsub('\\.','. ',nombre_estacion_origen),
+    nombre_estacion_destino = gsub('\\.','. ',nombre_estacion_destino),
+    nombre_estacion_origen = str_to_title(nombre_estacion_origen),
+    nombre_estacion_destino = str_to_title(nombre_estacion_destino)
   ) %>%
   select(!c(X.1, X, id_estacion_origen, direccion_estacion_origen, id_estacion_destino, direccion_estacion_destino))
 
