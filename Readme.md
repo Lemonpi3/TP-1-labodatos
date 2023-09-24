@@ -1,3 +1,5 @@
+Importante: Una vez hecho el pull del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos' para conservar las referencias de los path a los archivos .csv 
+
 ## La estructura de folders es la siguiente:
 
 ### /Scripts/
@@ -13,6 +15,7 @@ con el análisis exploratorio.
 Dentro de la carpeta Data se encuentran los datasets (Originales y también los dataset ya preprocesados)
 
 ## Plan de trabajo
+
 
 El plan será realizar incialmente la limpieza, y un análisis exploratorio individual de forma ágil.
 
