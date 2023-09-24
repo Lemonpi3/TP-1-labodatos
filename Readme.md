@@ -1,4 +1,4 @@
-Importante: Una vez hecho el pull del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos' para conservar las referencias de los path a los archivos .csv 
+Importante: Una vez hecho el pull del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos.Rproj' para conservar las referencias de los path a los archivos .csv 
 
 ## La estructura de folders es la siguiente:
 
