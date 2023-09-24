@@ -1,11 +1,12 @@
 require(tidyverse)
 
+#Bicis
 df_bici = read_csv('Data/trips_2022_reducido.csv') 
 df_bici = df_bici %>%
   filter( 
     (duracion_recorrido >= 300) &
-    (duracion_recorrido <= 3600)
-    ) %>%
+      (duracion_recorrido <= 3600)
+  ) %>%
   mutate(
     Género = if_else(is.na(Género), "OTHER", Género)
   ) %>%
