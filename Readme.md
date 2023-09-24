@@ -1,4 +1,4 @@
-## / ---- La estructura de folders es la siguiente:  ----  /
+## La estructura de folders es la siguiente:
 
 ### /Scripts/
 
