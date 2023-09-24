@@ -1,4 +1,6 @@
-/ ---- La estructura de folders es la siguiente:  ----  /
+## / ---- La estructura de folders es la siguiente:  ----  /
+
+### /Scripts/
 
 Dentro de la carpeta Scripts, cada integrante guarda sus notebooks o scripts en una carpeta propia.
 
@@ -6,6 +8,11 @@ Dentro de la carpeta Scripts, cada integrante guarda sus notebooks o scripts en 
 Dentro de esa carpeta, además hay un script llamado 'Limpieza Datasets.R' que realiza una limpieza de los datasets antes de comenzar
 con el análisis exploratorio.
 
+### /Data/ 
+
+Dentro de la carpeta Data se encuentran los datasets (Originales y también los dataset ya preprocesados)
+
+## Plan de trabajo
 
 El plan será realizar incialmente la limpieza, y un análisis exploratorio individual de forma ágil.
 
