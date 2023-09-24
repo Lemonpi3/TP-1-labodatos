@@ -1,4 +1,4 @@
-Importante: Una vez hecho el pull del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos.Rproj' para conservar las referencias de los path a los archivos .csv 
+Importante: Una vez hecho el clone del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos.Rproj' para conservar las referencias de los path a los archivos .csv 
 
 ## La estructura de folders es la siguiente:
 
@@ -25,4 +25,4 @@ Para evitar pisarnos demasiado la idea es que cada integrante que toma un tema l
 Si al final de cada análisis individual vemos que nos pisamos no hay problema, porque
 la idea es al final del camino unificar todo en un unico notebook, y en ese momento elegir de cada una esas opciones cual es la mas conveniente.
 
-Al final del camino realizaremos sobre ese notebook unificado la parte estética del entregable.
+Al final del camino realizaremos un entregable y nos enfocaremos en la parte estética de ese entregable.
