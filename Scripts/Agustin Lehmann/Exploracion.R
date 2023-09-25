@@ -56,3 +56,31 @@ df_bici %>%
   geom_boxplot()
 
 #Si, Los sabados y domingos suelen tener recorridos mas largos.
+
+#El clima afecta la duracion de los recorridos?
+
+df_clima = read_csv('Data/Clima_limpio.csv')
+
+#lluvias x duracion
+
+df_bici %>%
+  left_join(df_clima, "fecha") %>%
+  mutate(dia_semana =weekdays(fecha)) %>%
+  ggplot(aes(y=duracion_recorrido, x = lluvias_mm, color=dia_semana)) +
+  geom_point(alpha=0.2) +
+  geom_smooth(method = 'lm',se=F) +
+  facet_wrap(vars(dia_semana))
+
+#no estoy muy seguro de contarlo prefiero ignorarlo.
+
+#temp max x duracion, la gente hace recorridos mas cortos o largos si hace mas calor?
+
+df_bici %>%
+  left_join(df_clima, "fecha") %>%
+  mutate(dia_semana =weekdays(fecha)) %>%
+  ggplot(aes(y=duracion_recorrido, x = temp_max, color=dia_semana)) +
+  geom_point(alpha=0.2) +
+  geom_smooth(method = 'lm',se=F) +
+  facet_wrap(vars(dia_semana))
+
+#No cambia mucho asi que no se ve afectado.
