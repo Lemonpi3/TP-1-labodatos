@@ -84,3 +84,22 @@ df_bici %>%
   facet_wrap(vars(dia_semana))
 
 #No cambia mucho asi que no se ve afectado.
+
+#el modelo de bici afecta la duracion promedio, hacen que vayan mas rapido?
+#primero veo si hay 50-50 de los modelos
+df_bici %>%
+  ggplot(aes(x=modelo_bicicleta)) +
+  geom_bar()
+
+#hay alrededor de 1000 FIT mas que ICONIC
+#respondo la pregunta de arriba, separo por dia por que hay una diferencia en los findes como se vio antes.
+df_bici %>%
+  mutate(dia_semana =weekdays(fecha)) %>%
+  group_by(modelo_bicicleta, dia_semana) %>%
+  summarise(duracion_prom = mean(duracion_recorrido, na.rm = T)) %>%
+  ggplot(aes(x=modelo_bicicleta, y=duracion_prom)) +
+  geom_col() +
+  facet_wrap(vars(dia_semana))
+
+#Solo se ve una diferencia los domingos pero eso se puede deber a que hay un poco mas de FIT que Iconic.
+  
