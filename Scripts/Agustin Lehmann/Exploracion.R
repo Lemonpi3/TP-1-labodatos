@@ -47,7 +47,12 @@ df_bici %>%
   scale_x_datetime(date_labels="%b", date_breaks  ="month")
 
 # parece q en invierno el promedio y la media de duracion de recorridos es mas baja.
-# En abril se ve q hubo una bajada en el tiempo de recorrido maximo y upper fence.
+# En abril se ve q hubo una bajada en el tiempo de recorrido maximo y upper fence
 
+#Hay algun dia donde duren mas los recorridos?
+df_bici %>%
+  group_by(dia_semana = weekdays(fecha_origen_recorrido)) %>%
+  ggplot(aes(y=duracion_recorrido, fill= dia_semana)) +
+  geom_boxplot()
 
-
+#Si, Los sabados y domingos suelen tener recorridos mas largos.

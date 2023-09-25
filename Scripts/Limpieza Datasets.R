@@ -9,7 +9,7 @@ df_bici = df_bici %>%
       (duracion_recorrido <= 3600)
   ) %>%            # Filtramos los recorridos cuya duracion sea de entre 5 minutos y una hora 
   mutate(
-    Género = if_else(is.na(Género), "OTHER", Género),  # Si el genero es NA lo reemplazamos por otro
+    # Género = if_else(is.na(Género), "OTHER", Género),  # Si el genero es NA lo reemplazamos por otro
     nombre_estacion_origen = gsub('\\.','. ',nombre_estacion_origen),
     nombre_estacion_destino = gsub('\\.','. ',nombre_estacion_destino),
     nombre_estacion_origen = str_to_title(nombre_estacion_origen),
@@ -87,14 +87,14 @@ view(df_clima)
 
 
 
-prom_lluvias <- round(mean(df_clima$lluvias_mm, na.rm = TRUE), 2)
-
-# Reemplazamos los valores NA en la columna 'lluvias_mm' con el promedio
-df_clima$lluvias_mm[is.na(df_clima$lluvias_mm)] <- prom_lluvias
-
-# Visualizamos nuevamente para ver que no queden NA en el dataset
-valores_na_por_columna <- sapply(df_clima, function(x) sum(is.na(x)))
-print(valores_na_por_columna)
+# prom_lluvias <- round(mean(df_clima$lluvias_mm, na.rm = TRUE), 2)
+# 
+# # Reemplazamos los valores NA en la columna 'lluvias_mm' con el promedio
+# df_clima$lluvias_mm[is.na(df_clima$lluvias_mm)] <- prom_lluvias
+# 
+# # Visualizamos nuevamente para ver que no queden NA en el dataset
+# valores_na_por_columna <- sapply(df_clima, function(x) sum(is.na(x)))
+# print(valores_na_por_columna)
 
 # No quedan valores NA.
 # Guardamos el dataset procesado 
