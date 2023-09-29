@@ -101,5 +101,110 @@ df_bici %>%
   geom_col() +
   facet_wrap(vars(dia_semana))
 
-#Solo se ve una diferencia los domingos pero eso se puede deber a que hay un poco mas de FIT que Iconic.
+#Solo se ve una diferencia los domingos pero eso se puede deber a que hay un poco mas de FIT que Iconic y no al dia en particular.
+
+#cuantos viajes hay a lo largo del año?
+
+df_bici %>%
+  group_by(fecha) %>%
+  summarise(
+    n_viajes = n_distinct(id_recorrido)
+  ) %>%
+  ggplot(aes(x=fecha, y= n_viajes)) +
+  geom_col() +
+  geom_smooth() +
+  scale_x_date(date_labels="%b", date_breaks  ="month")
+  
+#la cantidad de viajes baja en verano e invierno(enero y julio como los menores) y aumenta en primavera otoño (abril y oct-nov)
+
+#las precipitaciones afectan?
+df_bici %>%
+  left_join(df_clima, "fecha") %>%
+  group_by(fecha) %>%
+  mutate(
+    n_viajes = n_distinct(id_recorrido),
+  ) %>%
+  ungroup() %>%
+  ggplot(aes(x=lluvias_mm, y=n_viajes)) +
+  geom_point() +
+  geom_smooth(method='lm', se=F) +
+  facet_wrap(vars(dia_semana=weekdays(fecha))) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) 
+
+#a mayor pptacion menos viajes hay
+
+#que estaciones son las mas populares (estacion de destino), cual tiene mas viajes?
+
+df_bici %>%
+  group_by(nombre_estacion_destino) %>%
+  summarize(
+    n_viajes = n_distinct(id_recorrido)
+  ) %>% 
+  arrange(desc(n_viajes)) %>%
+  top_n(10, n_viajes) %>% 
+  mutate(
+    str_wrap(nombre_estacion_destino, width = 5)
+  ) %>%
+  ggplot(aes(x=nombre_estacion_destino, y= n_viajes, level=nombre_estacion_destino)) +
+  geom_col() +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+
+#constitucion, pacifico y congreso son las mas populares
+
+#esto es todo el año o cambia mes a mes?
+
+plot_estacion_destino_mes = function(mes){
+return(df_bici %>%
+  filter(lubridate::month(fecha_destino_recorrido)== lubridate::month(mes)) %>%
+  group_by(nombre_estacion_destino) %>%
+  summarise(
+    n_viajes = n_distinct(id_recorrido),
+    mes = lubridate::month(fecha_destino_recorrido)[1]
+  ) %>% 
+  arrange(desc(n_viajes)) %>%
+  top_n(10, n_viajes) %>% 
+  mutate(
+    str_wrap(nombre_estacion_destino, width = 5)
+  ) %>% 
+  ggplot(aes(x=nombre_estacion_destino, y= n_viajes, level=nombre_estacion_destino))+
+  geom_col() +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  labs(
+      title = as.character(mes)
+    ))
+  }
+
+map(1:12, ~plot_estacion_destino_mes(mes = .x))
+
+#Varia mes a mes:
+# en enero plaza irlanda fue la mas popular seguida de Julieta Lanteri
+# en febrero Guatemala seguida de las estaciones F j Santamaria de oro, constitucion, godoy cruz y libertador
+# en marzo, mayo congreso y constitucion
+# abril , junio, diciembre constitucion
+# julio azucena, malabia
+# agosto Retiro Pacifico Godoy cruz y libertador
+# septiembre, oct pacifico
+# Nov Facultad derecho Acuña de figueroa constitucion rodrigo bueno , godoycruz y libertador
+
+#distribucion de viajes origen/destino en el mapa
+df_bici %>%
+  group_by(nombre_estacion_origen) %>%
+  mutate (
+    n_partidas = n_distinct(id_recorrido)
+  ) %>%
+  ggplot(aes(x=long_estacion_origen, y=lat_estacion_origen)) +
+  geom_point(aes(size=n_partidas))
+
+require(plotly)
+
+ggplotly(
+df_bici %>%
+  group_by(nombre_estacion_destino) %>%
+  mutate (
+    n_dest = n_distinct(id_recorrido),
+    nombre_estacion_destino = nombre_estacion_destino
+  ) %>%
+  ggplot(aes(x=long_estacion_destino, y=lat_estacion_destino)) +
+  geom_point(aes(size=n_dest))
+)
   
