@@ -54,3 +54,16 @@ df_bici %>%
   scale_x_continuous(breaks = seq(0,23,by=2))+
   facet_wrap(vars(weekdays(fecha_origen_recorrido)),levels = as.factor(c("lunes","martes","miércoles","jueves","viernes","sabado","domingo")))
 
+####Analisis clima
+
+ggplot(df_clima,mapping = aes(x=fecha))+
+  geom_line(mapping=aes(y=temp_prom),alpha=0.3)+
+  geom_smooth(mapping=aes(y=temp_prom),color="grey2",se=F)+
+  geom_smooth(mapping= aes(y=temp_min),se=F)+
+  geom_smooth(mapping = aes(y=temp_max),color="red2",se=F)+
+  scale_x_date(date_labels = "%b",date_breaks = "month")+
+  labs(y="Temperatura (ºC)",x="Fecha",title="Temperatura a lo largo del año")+
+  annotate("text",label="T Max",x=as.Date("2022-02-15"),y=28.5,color="red2",angle="-45")+
+  annotate("text",label="T Min",x=as.Date("2022-02-01"),y=21.5,color="blue",angle="-45")+
+  annotate("text",label="T Prom",x=as.Date("2022-02-10"),y=25,color="grey2",angle="-45")
+
