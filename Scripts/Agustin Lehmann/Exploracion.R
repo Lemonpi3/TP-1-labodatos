@@ -191,12 +191,18 @@ map(1:12, ~plot_estacion_destino_mes(mes = .x))
 require(sf)
 require(plotly)
 library(showtext) # https://r-graph-gallery.com/custom-fonts-in-R-and-ggplot2.html
-#tome cachos de aca https://github.com/z3tt/TidyTuesday/blob/main/R/2020_05_TreesSF.Rmd para el mapa del fondo
+library(cowplot)
+#le hice ingenieria inversa a esto https://github.com/z3tt/TidyTuesday/blob/main/R/2020_05_TreesSF.Rmd para el mapa del fondo
 #el shapefile de las calles https://data.buenosaires.gob.ar/dataset/calles/resource/juqdkmgo-302-resource , 
-#el de ciclovias es de la misma pagina pero perdi el link
+#el de ciclovias/comunas es de la misma pagina pero perdi el link
 
+font_add("PlexSans",
+         italic = "Assets/fonts/IBM_Plex_Sans/IBMPlexSans-Light.ttf" ,
+         bold="Assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.ttf",
+         regular ="Assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf" )
+showtext_auto()
 
-sf_shapefile = unzip("Assets/shapefiles/mapa_calles/callejero.zip", exdir = "Assets/shapefiles/mapa_calles")
+unzip("Assets/shapefiles/mapa_calles/callejero.zip", exdir = "Assets/shapefiles/mapa_calles")
 
 mapa = st_read("Assets/shapefiles/mapa_calles") %>% 
   st_transform( "+proj=longlat +ellps=WGS84 +datum=WGS84") #para q se acomode al scatter source: google
@@ -219,7 +225,7 @@ df_bici %>%
 theme_set(theme_minimal())
 
 theme_update(
-             plot.background = element_rect(fill = "#0b132b"),
+             plot.background = element_rect(fill = "#0b132b", color = "#0b132b"),
              panel.background = element_rect(fill = "#0b132b", colour = "#0b132b"),
              panel.grid.minor = element_blank(),
              panel.grid.major = element_blank(),
@@ -227,7 +233,10 @@ theme_update(
              axis.title = element_blank(),
              axis.ticks = element_blank(),
              legend.text = element_text(color = "white"),
-             legend.title = element_text(color = "white"))
+             legend.title = element_text(color = "white"),
+             
+             
+             )
 # 
 # ggplotly(
 df_bici %>%
@@ -243,41 +252,134 @@ df_bici %>%
                  color=n_dest,
                  ),
              alpha = 0.1)+
-  scale_color_gradient(high="turquoise",low="#3a506b",guide=F)+
-  scale_size(name="Cant. de viajes", range(1:125), breaks = c(20,40,80,120), labels= c(20,40,80,120), guide=F) +
+  scale_color_gradient(high="turquoise",low="#3a606b",guide=F)+
+  scale_size(name="N° de viajes", range(1:125), breaks = c(20,40,80,120), labels= c(20,40,80,120), guide=F) +
   guides(size="none")+
   guides(size = guide_legend(label.position = "bottom", 
                              override.aes = list(color = c("#3A506B","#4B8895","#5BC0BE","#6FFFE9"), stroke = .8, fill = NA),
-                             title.position="top"
+                             title.position="top",
+
                              )
          ) +
   theme(
     legend.position = c(.15, .08),
     legend.direction = "horizontal",
     legend.key.width = unit(.01, "lines"),
-    legend.text = element_text(size = 8, family = "Neutraface Text Book Italic", color = "grey50"),
-    legend.title = element_text("Cantidad de viajes"),
-   )
-
-
-plot_destino = function(df){
-  return(
-    df%>%
-      group_by(nombre_estacion_destino) %>%
-      mutate (
-        n_dest = n_distinct(id_recorrido)
-      ) %>%
-      ggplot(aes(text=nombre_estacion_destino), alpha =0.7) +
-      geom_sf(data= mapa, alpha = 0.3 ,aes(text=NULL),color="white") +
-      geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino, size=n_dest* 1.25 ), color="black") +
-      geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino,
-                     size=n_dest *0.5,
-                     color=n_dest,
-      ),
-      alpha = 0.1)+
-      scale_color_gradient(high="turquoise",low="#3a506b")+
-      
+    legend.text = element_text(size = 8, family = "PlexSans Italic", color = "grey80"),
+    legend.title = element_text(family ="PlexSans Regular", hjust=-0.3),
+    plot.title = element_text(size = 18, family ="PlexSans Regular", color = "white"),
+    plot.subtitle = element_text(size = 12, family = "PlexSans Italic", color = "grey80"),
+    plot.margin = margin(10, 30, 10, 50),
+   ) +
+  labs(
+    title = "Estaciones de Destino",
+    subtitle =  "Todo 2022"
+  ) +
+  annotate( "text",
+    x=-58.423 , y = -34.692,
+    label = str_wrap("Las 6 estaciones mas populares fueron: Constitucion (125), Pacifico (106), Congreso (95), Godoy Cruz Y Libertador (95) , Plaza Italia (85) y Hospital De Clinicas (85)"
+                     ,width=40),
+    color = "white",
+    family ="PlexSans Bold",
+    hjust = 0
   )
+
+
+plot_destino = function(df, texto, subtitulo = "Todo 2022"){
+  
+  theme_set(theme_minimal())
+  
+  theme_update(
+    plot.background = element_rect(fill = "#0b132b"),
+    panel.background = element_rect(fill = "#0b132b", colour = "#0b132b"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    legend.text = element_text(color = "white"),
+    legend.title = element_text(color = "white")
+    )
+  
+  grafico = df %>%
+    group_by(nombre_estacion_destino) %>%
+    mutate (
+      n_dest = n_distinct(id_recorrido)
+    ) %>%
+    ggplot(aes(text=nombre_estacion_destino), alpha =0.7) +
+    geom_sf(data= mapa, alpha = 0.3 ,aes(text=NULL),color="white") +
+    geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino, size=n_dest* 1.25 ), color="black") +
+    geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino,
+                   size=n_dest *0.5,
+                   color=n_dest,
+    ),
+    alpha = 0.1)+
+    scale_color_gradient(high="turquoise",low="#3a606b",guide=F)+
+    scale_size(name="N° de viajes", range(1:125), breaks = c(20,40,80,120), labels= c(20,40,80,120), guide=F) +
+    guides(size="none")+
+    guides(size = guide_legend(label.position = "bottom", 
+                               override.aes = list(color = c("#3A506B","#4B8895","#5BC0BE","#6FFFE9"), stroke = .8, fill = NA),
+                               title.position="top",
+                               
+    )
+    ) +
+    theme(
+      legend.position = c(.15, .08),
+      legend.direction = "horizontal",
+      legend.key.width = unit(.01, "lines"),
+      legend.text = element_text(size = 8, family = "PlexSans Italic", color = "grey80"),
+      legend.title = element_text(family ="PlexSans Regular", hjust=0.3),
+      plot.title = element_text(size = 18, family ="PlexSans Regular", color = "white"),
+      plot.subtitle = element_text(size = 12, family = "PlexSans Italic", color = "grey80"),
+      ) +
+    labs(
+      title = "Estaciones de Destino",
+      subtitle = subtitulo
+    ) +
+    annotate( "text",
+              x=-58.413 , y = -34.682,
+              label = str_wrap(texto ,width=30),
+              color = "white",
+              family ="PlexSans Bold",
+              hjust = 0,
+              size = 6.7,
+              lineheight = .6
+    )
+  
+    
+  return( grafico)
+    
 }
 
-plot_destino(df_bici)
+# tidyverse https://www.tidyverse.org/blog/2020/08/taking-control-of-plot-scaling/
+p = plot_destino(df_bici, texto = "Las 6 estaciones mas populares fueron: Constitucion (125), Pacifico (106), Congreso (95), Godoy Cruz Y Libertador (95) , Plaza Italia (85) y Hospital De Clinicas (85)")
+
+require(ragg)
+ggsave(
+  "Assets/img/Estaciones destino Año.png", 
+  p, 
+  device = agg_png, 
+  width = 12, height = 12, units = "cm", res = 900,
+  scaling = 0.5
+)
+knitr::include_graphics("Estaciones destino Año.png")
+
+g = df_bici %>%
+  group_by(month = lubridate::floor_date(fecha_origen_recorrido, 'month')) %>%
+  plot_destino(texto= "",subtitulo = "Mes a Mes") +
+  facet_wrap(vars(month), nrow=2) +
+  theme(
+    strip.text.x = element_text(
+      size = 7, color = "white", family ="PlexSans Regular"
+    ))
+
+g
+
+ggsave(
+  "Assets/img/Estaciones destino Mes a mes.png", 
+  g, 
+  device = agg_png, 
+  width =20, height = 8, units = "cm", res = 1900,
+  scaling = 0.3
+)
+knitr::include_graphics("Estaciones destino Año.png")

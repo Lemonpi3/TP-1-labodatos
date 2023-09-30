@@ -243,6 +243,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -355,8 +356,69 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <section id="cantidad-de-viajes" class="slide level2">
 <h2>Cantidad de viajes</h2>
 </section>
-<section id="destino-mas-comun" class="slide level2">
-<h2>Destino mas comun</h2>
+<section id="estaciones-de-destino" class="slide level2">
+<h2>Estaciones de destino</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><img data-src="Assets/img/Estaciones%20destino%20Año.png"></p>
+</div><div class="column smaller" style="width:35%;">
+<table>
+<thead>
+<tr class="header">
+<th>Estacion de destino</th>
+<th>Cantidad de viajes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>147 - Constitución</td>
+<td>125</td>
+</tr>
+<tr class="even">
+<td>014 - Pacifico</td>
+<td>106</td>
+</tr>
+<tr class="odd">
+<td>008 - Congreso</td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td>160 - Godoy Cruz Y Libertador</td>
+<td>95</td>
+</tr>
+<tr class="odd">
+<td>005 - Plaza Italia</td>
+<td>85</td>
+</tr>
+<tr class="even">
+<td>131- Hospital De Clínicas</td>
+<td>85</td>
+</tr>
+<tr class="odd">
+<td>001 - Facultad De Derecho</td>
+<td>84</td>
+</tr>
+<tr class="even">
+<td>130 - Retiro Ii</td>
+<td>83</td>
+</tr>
+<tr class="odd">
+<td>017 - Plaza Almagro</td>
+<td>80</td>
+</tr>
+<tr class="even">
+<td>066 - Billinghurst</td>
+<td>78</td>
+</tr>
+<tr class="odd">
+<td>096 - Carlos Gardel</td>
+<td>78</td>
+</tr>
+</tbody>
+</table>
+<p>Si bien las estaciones mas usadas estan por Palermo y el centro tomando todo el 2022, esta tendendencia varia de mes a mes, veamoslo.</p>
+</div>
+</div>
 </section>
 <section id="origen-mas-comun" class="slide level2">
 <h2>Origen mas comun</h2>
@@ -410,13 +472,13 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
+'smaller': true,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -561,9 +623,9 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1600,
 
-        height: 700,
+        height: 900,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,

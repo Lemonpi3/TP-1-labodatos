@@ -1,10 +1,16 @@
 ---
 title: "Reporte"
 author: "Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego"
-format: revealjs
+format: 
+  revealjs:
+      smaller: true
+      scrollable: true
+      width: 1600
+      height: 900
 editor: visual
 execute:
   echo: false
+
 ---
 
 ```{r prep, message=FALSE, include=FALSE}
@@ -22,17 +28,55 @@ unzip("Assets/shapefiles/mapa_calles/callejero.zip", exdir = "Assets/shapefiles/
 
 mapa = st_read("Assets/shapefiles/mapa_calles") %>% 
   st_transform( "+proj=longlat +ellps=WGS84 +datum=WGS84")
+
+#fuentes
+font_add("PlexSans",
+         italic = "Assets/fonts/IBM_Plex_Sans/IBMPlexSans-Light.ttf" ,
+         bold="Assets/fonts/IBM_Plex_Sans/IBMPlexSans-Bold.ttf",
+         regular ="Assets/fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf" )
+showtext_auto()
 ```
 
 # Descripcion del Dataset
+
 ## Clima
 
 ## Bicis
 
 # Viajes
+
 ## Cantidad de viajes
 
-## Destino mas comun
+## Estaciones de destino
+:::: {.columns}
+
+::: {.column width="65%"}
+![](Assets/img/Estaciones destino Año.png)
+:::
+
+::: {.column width="35%"  .smaller}
+| Estacion de destino          |Cantidad de viajes |
+|-----------------------------------|---------|
+| 147 - Constitución               | 125     |
+| 014 - Pacifico                   | 106     |
+| 008 - Congreso                   | 100     |
+| 160 - Godoy Cruz Y Libertador    | 95      |
+| 005 - Plaza Italia               | 85      |
+| 131- Hospital De Clínicas        | 85      |
+| 001 - Facultad De Derecho        | 84      |
+| 130 - Retiro Ii                  | 83      |
+| 017 - Plaza Almagro              | 80      |
+| 066 - Billinghurst               | 78      |
+| 096 - Carlos Gardel              | 78      |
+
+
+
+Si bien las estaciones mas usadas estan por Palermo y el centro tomando 
+todo el 2022,
+esta tendendencia varia de mes a mes, veamoslo.
+:::
+
+::::
 
 ## Origen mas comun
 
@@ -41,9 +85,9 @@ mapa = st_read("Assets/shapefiles/mapa_calles") %>%
 ## Duracion de viajes
 
 # Usuarios
+
 ## Cantidad de usuarios unicos
 
 ## Info de los usuarios
 
 ## Preferencias de bicis
-
