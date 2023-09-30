@@ -187,24 +187,97 @@ map(1:12, ~plot_estacion_destino_mes(mes = .x))
 # Nov Facultad derecho Acuña de figueroa constitucion rodrigo bueno , godoycruz y libertador
 
 #distribucion de viajes origen/destino en el mapa
+
+require(sf)
+require(plotly)
+library(showtext) # https://r-graph-gallery.com/custom-fonts-in-R-and-ggplot2.html
+#tome cachos de aca https://github.com/z3tt/TidyTuesday/blob/main/R/2020_05_TreesSF.Rmd para el mapa del fondo
+#el shapefile de las calles https://data.buenosaires.gob.ar/dataset/calles/resource/juqdkmgo-302-resource , 
+#el de ciclovias es de la misma pagina pero perdi el link
+
+
+sf_shapefile = unzip("Assets/shapefiles/mapa_calles/callejero.zip", exdir = "Assets/shapefiles/mapa_calles")
+
+mapa = st_read("Assets/shapefiles/mapa_calles") %>% 
+  st_transform( "+proj=longlat +ellps=WGS84 +datum=WGS84") #para q se acomode al scatter source: google
+
+comunas = st_read("Assets/shapefiles/comunas")%>% 
+  st_transform( "+proj=longlat +ellps=WGS84 +datum=WGS84") %>%
+  arrange(COMUNAS)%>%
+  mutate(COMUNAS = factor(as.character(COMUNAS),as.character(COMUNAS))) #ordeno
+
+
 df_bici %>%
   group_by(nombre_estacion_origen) %>%
   mutate (
     n_partidas = n_distinct(id_recorrido)
   ) %>%
-  ggplot(aes(x=long_estacion_origen, y=lat_estacion_origen)) +
-  geom_point(aes(size=n_partidas))
+  ggplot() +
+  geom_sf(data= mapa, alpha = 0.3 ) +
+  geom_point(aes(x=long_estacion_origen, y=lat_estacion_origen, size=n_partidas), alpha = 0.7)
 
-require(plotly)
+theme_set(theme_minimal())
 
-ggplotly(
+theme_update(
+             plot.background = element_rect(fill = "#0b132b"),
+             panel.background = element_rect(fill = "#0b132b", colour = "#0b132b"),
+             panel.grid.minor = element_blank(),
+             panel.grid.major = element_blank(),
+             axis.text = element_blank(),
+             axis.title = element_blank(),
+             axis.ticks = element_blank(),
+             legend.text = element_text(color = "white"),
+             legend.title = element_text(color = "white"))
+# 
+# ggplotly(
 df_bici %>%
   group_by(nombre_estacion_destino) %>%
   mutate (
-    n_dest = n_distinct(id_recorrido),
-    nombre_estacion_destino = nombre_estacion_destino
+    n_dest = n_distinct(id_recorrido)
   ) %>%
-  ggplot(aes(x=long_estacion_destino, y=lat_estacion_destino)) +
-  geom_point(aes(size=n_dest))
-)
-  
+  ggplot(aes(text=nombre_estacion_destino), alpha =0.7) +
+  geom_sf(data= mapa, alpha = 0.3 ,aes(text=NULL),color="white") +
+  geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino, size=n_dest* 1.25 ), color="black") +
+  geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino,
+                 size=n_dest *0.5,
+                 color=n_dest,
+                 ),
+             alpha = 0.1)+
+  scale_color_gradient(high="turquoise",low="#3a506b",guide=F)+
+  scale_size(name="Cant. de viajes", range(1:125), breaks = c(20,40,80,120), labels= c(20,40,80,120), guide=F) +
+  guides(size="none")+
+  guides(size = guide_legend(label.position = "bottom", 
+                             override.aes = list(color = c("#3A506B","#4B8895","#5BC0BE","#6FFFE9"), stroke = .8, fill = NA),
+                             title.position="top"
+                             )
+         ) +
+  theme(
+    legend.position = c(.15, .08),
+    legend.direction = "horizontal",
+    legend.key.width = unit(.01, "lines"),
+    legend.text = element_text(size = 8, family = "Neutraface Text Book Italic", color = "grey50"),
+    legend.title = element_text("Cantidad de viajes"),
+   )
+
+
+plot_destino = function(df){
+  return(
+    df%>%
+      group_by(nombre_estacion_destino) %>%
+      mutate (
+        n_dest = n_distinct(id_recorrido)
+      ) %>%
+      ggplot(aes(text=nombre_estacion_destino), alpha =0.7) +
+      geom_sf(data= mapa, alpha = 0.3 ,aes(text=NULL),color="white") +
+      geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino, size=n_dest* 1.25 ), color="black") +
+      geom_point(aes(x=long_estacion_destino, y=lat_estacion_destino,
+                     size=n_dest *0.5,
+                     color=n_dest,
+      ),
+      alpha = 0.1)+
+      scale_color_gradient(high="turquoise",low="#3a506b")+
+      
+  )
+}
+
+plot_destino(df_bici)

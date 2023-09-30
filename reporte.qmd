@@ -1,0 +1,49 @@
+---
+title: "Reporte"
+author: "Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego"
+format: revealjs
+editor: visual
+execute:
+  echo: false
+---
+
+```{r prep, message=FALSE, include=FALSE}
+#pongan Imports ,funciones y setups globales de los graficos que usen aca
+require(tidyverse)
+require(sf)
+require(showtext)
+
+
+df_bici = read_csv('Data/Bicis_limpio.csv')
+df_clima = read_csv('Data/Clima_limpio.csv')
+
+#el archivo descomprimido era muy grande para github
+unzip("Assets/shapefiles/mapa_calles/callejero.zip", exdir = "Assets/shapefiles/mapa_calles")
+
+mapa = st_read("Assets/shapefiles/mapa_calles") %>% 
+  st_transform( "+proj=longlat +ellps=WGS84 +datum=WGS84")
+```
+
+# Descripcion del Dataset
+## Clima
+
+## Bicis
+
+# Viajes
+## Cantidad de viajes
+
+## Destino mas comun
+
+## Origen mas comun
+
+## Franja horaria
+
+## Duracion de viajes
+
+# Usuarios
+## Cantidad de usuarios unicos
+
+## Info de los usuarios
+
+## Preferencias de bicis
+
