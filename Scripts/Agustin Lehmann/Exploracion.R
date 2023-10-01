@@ -104,17 +104,43 @@ df_bici %>%
 #Solo se ve una diferencia los domingos pero eso se puede deber a que hay un poco mas de FIT que Iconic y no al dia en particular.
 
 #cuantos viajes hay a lo largo del año?
+theme_set(theme_minimal())
+
+theme_update(
+  plot.background = element_rect(fill = "#0b132b"),
+  panel.background = element_rect(fill = "#0b132b", colour = "#0b132b"),
+  panel.grid.minor = element_blank(),
+  panel.grid.major = element_blank(),
+  axis.text = element_blank(),
+  axis.title = element_blank(),
+  axis.ticks = element_blank(),
+  legend.text = element_text(color = "white"),
+  legend.title = element_text(color = "white")
+)
+
 
 df_bici %>%
-  group_by(fecha) %>%
-  summarise(
-    n_viajes = n_distinct(id_recorrido)
+  mutate(
+    fecha = lubridate::ceiling_date(fecha, "week"),
+    semana = lubridate::week(fecha)
   ) %>%
-  ggplot(aes(x=fecha, y= n_viajes)) +
-  geom_col() +
-  geom_smooth() +
-  scale_x_date(date_labels="%b", date_breaks  ="month")
-  
+  group_by(semana) %>%
+  summarise(
+    n_viajes = n_distinct(id_recorrido),
+    fecha =  format(fecha[1], "%d\n%b")
+  ) %>%
+  arrange(desc(n_viajes)) %>%
+  mutate(
+    top_5 = ifelse((n_viajes>=n_viajes[5]), "Top 5", ifelse((n_viajes<=n_viajes[48]), "Bottom 5", "Others")),
+  ) %>% 
+  ggplot(aes(x = semana, y = n_viajes)) +
+  geom_col(aes(fill = top_5)) +
+  geom_smooth(aes(y=n_viajes),se=F, color="#ffbe0b", size=1.5, method="gam", alpha = 0.1) +
+  geom_text(aes(label = n_viajes), position = position_stack(vjust = 0.5), color = "black") +
+  geom_text(aes(label = fecha, y = n_viajes + 1), position = position_stack(vjust = 1.06), color = "white") +
+  scale_x_continuous(breaks = seq(from = 1, to = 53, by = 1)) +
+  scale_fill_manual(values = c("Top 5" = "turquoise", "Others" = "gray80", "Bottom 5" = "#fb5607")) +
+  guides(fill = FALSE) 
 #la cantidad de viajes baja en verano e invierno(enero y julio como los menores) y aumenta en primavera otoño (abril y oct-nov)
 
 #las precipitaciones afectan?
@@ -191,7 +217,6 @@ map(1:12, ~plot_estacion_destino_mes(mes = .x))
 require(sf)
 require(plotly)
 library(showtext) # https://r-graph-gallery.com/custom-fonts-in-R-and-ggplot2.html
-library(cowplot)
 #le hice ingenieria inversa a esto https://github.com/z3tt/TidyTuesday/blob/main/R/2020_05_TreesSF.Rmd para el mapa del fondo
 #el shapefile de las calles https://data.buenosaires.gob.ar/dataset/calles/resource/juqdkmgo-302-resource , 
 #el de ciclovias/comunas es de la misma pagina pero perdi el link
