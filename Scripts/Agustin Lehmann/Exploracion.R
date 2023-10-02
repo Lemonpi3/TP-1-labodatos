@@ -8,7 +8,48 @@ palette = c("#f64f2a", "#d4cc21", "#80b918", "#71e2e5", "#2d728f", "#ffffff", "#
 #por cuanto tiempo duran los recorridos normalmente durante todo el año?
 df_bici %>%
 ggplot(aes(y=duracion_recorrido)) +
-  geom_boxplot()
+  geom_boxplot(width=0.2, fill = "turquoise") +
+  geom_segment(aes(x = -0.05, xend = 0.05, y = min(df_bici$duracion_recorrido), yend = min(df_bici$duracion_recorrido)),) +
+  geom_segment(aes(x = -0.05, xend = 0.05, y = quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido), yend = quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido))) +
+  annotate("text",
+           x=0.08, y = quantile(df_bici$duracion_recorrido,0.75) + 50,
+           label = lubridate::seconds_to_period(
+             round(
+               quantile(df_bici$duracion_recorrido,0.75), digits=2)
+             )
+           )+
+  annotate("text",
+           x=0.08, y = quantile(df_bici$duracion_recorrido,0.5) + 50,
+           label = lubridate::seconds_to_period(
+             round(
+               quantile(df_bici$duracion_recorrido,0.5), digits=2)
+           )
+  )+
+  annotate("text",
+           x=0.08, y = quantile(df_bici$duracion_recorrido,0.25) + 50,
+           label = lubridate::seconds_to_period(
+             round(
+               quantile(df_bici$duracion_recorrido,0.25), digits=2)
+           )
+  ) +
+  annotate("text",
+           x=0.078, y = quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido),
+           label = lubridate::seconds_to_period(
+             round(quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido),0)
+           )
+  ) +
+  scale_x_continuous(breaks = c(-0.1,0,0.1)) +
+  scale_y_continuous(breaks = seq(from=300, to=3600, by=600),labels = function(x) {
+    return(lubridate::seconds_to_period(x)) } ) +
+  labs(
+    title = "Duracion del recorrido (segundos)"
+  ) +
+  theme_minimal() +
+  theme(
+        axis.title =element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+  )
 
 #veo el promedio y mediana
 mean(df_bici$duracion_recorrido)
@@ -62,14 +103,18 @@ df_bici %>%
 df_clima = read_csv('Data/Clima_limpio.csv')
 
 #lluvias x duracion
+require(ggbreak)
 
 df_bici %>%
   left_join(df_clima, "fecha") %>%
-  mutate(dia_semana =weekdays(fecha)) %>%
-  ggplot(aes(y=duracion_recorrido, x = lluvias_mm, color=dia_semana)) +
+  filter(lluvias_mm>0) %>%
+  mutate(
+    mes =lubridate::month(fecha),
+    ) %>%
+  ggplot(aes(y=duracion_recorrido, x = lluvias_mm)) +
   geom_point(alpha=0.2) +
-  geom_smooth(method = 'lm',se=F) +
-  facet_wrap(vars(dia_semana))
+  geom_smooth(method = 'lm') +
+  scale_x_break(c(50,200))
 
 #no estoy muy seguro de contarlo prefiero ignorarlo.
 
@@ -77,11 +122,9 @@ df_bici %>%
 
 df_bici %>%
   left_join(df_clima, "fecha") %>%
-  mutate(dia_semana =weekdays(fecha)) %>%
-  ggplot(aes(y=duracion_recorrido, x = temp_max, color=dia_semana)) +
+  ggplot(aes(y=duracion_recorrido, x = temp_max)) +
   geom_point(alpha=0.2) +
-  geom_smooth(method = 'lm',se=F) +
-  facet_wrap(vars(dia_semana))
+  geom_smooth(method = 'lm',se=F)
 
 #No cambia mucho asi que no se ve afectado.
 

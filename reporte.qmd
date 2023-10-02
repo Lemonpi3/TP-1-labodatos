@@ -11,7 +11,6 @@ editor: visual
 execute:
   echo: false
   warning: false
-
 ---
 
 ```{r prep, message=FALSE, include=FALSE}
@@ -174,10 +173,10 @@ La cantidad de viajes disminuye en el verano y el invierno siendo los puntos mas
 Por el contrario hay mas viajes en otoño y primavera, siendo la semana del 10 de abril y del 2 de octubre las semanas en las que hubo mas uso.
 
 ## Estaciones de destino
+
 ![](Assets/img/Slide_destino_2022.png)
 
 ## Primer semestre
-
 
 ```{r warning=FALSE}
 theme_set(theme_minimal())
@@ -221,11 +220,9 @@ grid.arrange(grobs = graphs)
 
 En Julio Malabia y Azucena eran las mas populares, Pacifico estubo entre las mas populares de agosto a octubre y Constitucion Topeo en diciembre, puede ser pq se creia que iba a pasar la selección por ahi cuando ganaron el mundial.
 
-
 ## Origen mas comun
 
 ![](Assets/img/slide_origen_2022.png)
-
 
 ## Estaciones de origen mas comunes, primer semestre
 
@@ -246,9 +243,8 @@ theme_update(
 graphs = map(1:6, ~plot_estacion_origen_mes(mes = .x))
 grid.arrange(grobs = graphs)
 ```
-Ya en el primer semestre podemos ver como varia, en enero la estacion de origen mas usada es es Pacifico, pero febrero ya esta compartiendo el puesto con Plaza Bolivia.
-En marzo la mas usada fue Plaza Italia, el abril Retiro, en mayo un empate entre Congreso y Facultad de medicina y en junio Acuña de figueroa fue la mas usada.
 
+Ya en el primer semestre podemos ver como varia, en enero la estacion de origen mas usada es es Pacifico, pero febrero ya esta compartiendo el puesto con Plaza Bolivia. En marzo la mas usada fue Plaza Italia, el abril Retiro, en mayo un empate entre Congreso y Facultad de medicina y en junio Acuña de figueroa fue la mas usada.
 
 ## Estaciones de origen mas comunes, segundo semestre
 
@@ -269,12 +265,199 @@ theme_update(
 graphs = map(7:12, ~plot_estacion_origen_mes(mes = .x))
 grid.arrange(grobs = graphs)
 ```
-En el segundo semestre podemos ver mejor la tendecia q aparecia cuando tomabamos todo el año, a excepcion de julio y septiembre donde las mas usadas fueron Plaza Italia y Hospital de clinicas respectivamente, podemos ver que las 3 estaciones de origen mas usadas (Pacifico, Retiro y Constitucion) dominan en los otros meses. 
 
+En el segundo semestre podemos ver mejor la tendecia q aparecia cuando tomabamos todo el año, a excepcion de julio y septiembre donde las mas usadas fueron Plaza Italia y Hospital de clinicas respectivamente, podemos ver que las 3 estaciones de origen mas usadas (Pacifico, Retiro y Constitucion) dominan en los otros meses.
+
+```{r}
+theme_set(theme_minimal())
+```
 
 ## Franja horaria
 
 ## Duracion de viajes
+
+::: columns
+::: {.column width="30%"}
+```{r, fig.width=4, fig.height=8}
+#por cuanto tiempo duran los recorridos normalmente durante todo el año?
+df_bici %>%
+ggplot(aes(y=duracion_recorrido)) +
+  geom_boxplot(width=0.2, fill = "turquoise") +
+  geom_segment(aes(x = -0.05, xend = 0.05, y = min(df_bici$duracion_recorrido), yend = min(df_bici$duracion_recorrido)),) +
+  geom_segment(aes(x = -0.05, xend = 0.05, y = quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido), yend = quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido))) +
+  annotate("text",
+           x=0.08, y = quantile(df_bici$duracion_recorrido,0.75) + 50,
+           label = lubridate::seconds_to_period(
+             round(
+               quantile(df_bici$duracion_recorrido,0.75), digits=2)
+             ), size=7
+           )+
+  annotate("text",
+           x=0.08, y = quantile(df_bici$duracion_recorrido,0.5) + 50,
+           label = lubridate::seconds_to_period(
+             round(
+               quantile(df_bici$duracion_recorrido,0.5), digits=2)
+           ), size=7
+  )+
+  annotate("text",
+           x=0.08, y = quantile(df_bici$duracion_recorrido,0.25) + 50,
+           label = lubridate::seconds_to_period(
+             round(
+               quantile(df_bici$duracion_recorrido,0.25), digits=2)
+           ), size=7
+  ) +
+  annotate("text",
+           x=0.078, y = quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido) + 50,
+           label = lubridate::seconds_to_period(
+             round(quantile(df_bici$duracion_recorrido, 0.75) + 1.5 * IQR(df_bici$duracion_recorrido),0)
+           ) , size= 7
+  ) +
+  scale_x_continuous(breaks = c(-0.1,0,0.1)) +
+  scale_y_continuous(breaks = seq(from=300, to=3600, by=600),labels = function(x) {
+    return(lubridate::seconds_to_period(x)) } ) +
+  labs(
+    title = "Duracion del recorrido"
+  ) +
+  theme_minimal() +
+  theme(
+        axis.title =element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        text = element_text(size = 32)
+  )+
+  coord_fixed(ratio = 0.1/3600*6)
+```
+:::
+
+::: {.column width="70%"}
+-   Hay 348 outliers con mas de 45mins de recorrido
+
+-   la mayoria de las personas usa las bicis por menos de 45min
+
+-   El tiempo promedio de uso es de 18 mins 42segs.
+
+-   El tiempo medio de uso es de 16mins con 4 seg.
+
+-   En invierno el promedio y la media de duracion de recorridos es mas baja.
+
+-   En abril se ve q hubo una bajada en el tiempo de recorrido maximo y upper fence
+
+    ```{r , fig.width=12, fig.height=6}
+    palette = c("#f64f2a", "#d4cc21", "#80b918", "#71e2e5", "#2d728f", "#ffffff", "#000000")
+    # Y por mes?
+    df_bici %>%
+      group_by(month = lubridate::floor_date(fecha_origen_recorrido, 'month')) %>% #saco el mes
+      summarize(
+        upper_fence = quantile(duracion_recorrido, p=0.75) +1.5*IQR(duracion_recorrido),
+        lower_fence = quantile(duracion_recorrido, p=0.75) -1.5*IQR(duracion_recorrido),
+        mean_time = mean(duracion_recorrido),
+        median_time = median(duracion_recorrido),
+        max_time = max(duracion_recorrido)
+      ) %>%
+      ggplot(aes(x=month)) +
+      geom_line(aes(y=max_time, color =palette[5]),linewidth=2) +
+      geom_line(aes(y=upper_fence, color =palette[4]),linewidth=2) +
+      geom_line(aes(y=median_time, color=palette[3]),linewidth=2) +
+      geom_line(aes(y=mean_time, color=palette[2]),linewidth=2) +
+      geom_line(aes(y=lower_fence, color=palette[1]),linewidth=2) +
+      scale_color_manual( 
+        name = "Duracion del recorrido", 
+        values = palette[1:5], labels = c("Maximo", "Upper fence","Media","Promedio","Lower fence"),
+        guide = guide_legend(direction = "vertical", title.position = "top", title.hjust = 0.5)) +
+      scale_x_datetime(date_labels="%b", date_breaks  ="month")+
+      scale_y_continuous(breaks = seq(from=300, to=3600, by=600),labels = function(x) {
+        return(lubridate::seconds_to_period(x)) } ) +
+        theme_minimal() +
+      theme(
+        axis.title =element_blank(),
+        text = element_text(size = 32),
+        panel.background = element_rect(fill = "grey", colour = "#0b132b"),
+      )
+
+    ```
+:::
+:::
+
+## Duracion de Viajes
+
+### Los viajes duran mas los fines de semana.
+
+```{r, fig.width=8, fig.height=4}
+df_bici %>%
+  mutate(
+    dia_semana = weekdays(fecha_origen_recorrido),
+    dia_semana =  factor(dia_semana, levels =as.factor(c("lunes","martes","miércoles","jueves","viernes","sábado","domingo")))
+  ) %>%
+  group_by(dia_semana) %>%
+  filter(!is.na(dia_semana)) %>%
+  ggplot(aes(y=duracion_recorrido, fill= dia_semana)) +
+  geom_boxplot() +
+      scale_y_continuous(breaks = seq(from=300, to=3600, by=600),labels = function(x) {
+        return(lubridate::seconds_to_period(x)) } ) +
+        theme_minimal() +
+      theme(
+        axis.title =element_blank(),
+        text = element_text(size = 32),
+        panel.background = element_rect(fill = "grey", colour = "#0b132b"),
+        legend.position="none"
+      ) + 
+  scale_x_continuous(breaks=seq(from=-0.3,to=0.3,by = 0.1),
+                     labels=c("lunes","martes","miércoles","jueves","viernes","sábado","domingo")) 
+```
+
+
+## El clima afecta la duracion de los recorridos?
+
+### Veamos si las variables climaticas afectan la duración de los viajes
+
+::: columns
+::: {.column width="50%"}
+```{r , fig.width=8, fig.height=4}
+require(ggbreak)
+
+df_bici %>%
+  left_join(df_clima, "fecha") %>%
+  filter(lluvias_mm>0) %>%
+  mutate(
+    mes =lubridate::month(fecha),
+    ) %>%
+  ggplot(aes(y=duracion_recorrido, x = lluvias_mm)) +
+  geom_point(alpha=0.2) +
+  geom_smooth(method = 'lm', se=F) +
+  scale_x_break(c(50,200)) +
+    scale_y_continuous(breaks = seq(from=300, to=3600, by=600),labels = function(x) {
+    return(lubridate::seconds_to_period(x)) } ) +
+  labs (
+    title = "Duracion en funcion de la precipitacion (mm)",
+    x = "precipitacion (mm)", 
+    y = "duracion recorrido"
+  ) + theme(text = element_text(size = 32))
+```
+
+Las lluvias no parecen afectar del todo a las duraciones de los viajes.
+:::
+
+::: {.column width="50%"}
+```{r , fig.width=8, fig.height=4}
+df_bici %>%
+  left_join(df_clima, "fecha") %>%
+  ggplot(aes(y=duracion_recorrido, x = temp_max)) +
+  geom_point(alpha=0.2) +
+  geom_smooth(method = 'lm',se=F) +
+    scale_y_continuous(breaks = seq(from=300, to=3600, by=600),labels = function(x) {
+    return(lubridate::seconds_to_period(x)) } ) +
+  labs (
+    title = "Duracion en funcion de la temperatura (°C)",
+    x = "temperatura (°C)", 
+    y = "duracion recorrido",
+  ) + theme(text = element_text(size = 32))
+
+```
+
+Hay una leve tendencia hacia mas duracion a mas calor, pero es muy pequeña.
+:::
+:::
+
 
 # Usuarios
 
