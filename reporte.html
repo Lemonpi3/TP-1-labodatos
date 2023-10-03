@@ -402,7 +402,7 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <section id="segundo-semestre" class="slide level2">
 <h2>Segundo Semestre</h2>
 
-<img data-src="reporte_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><p>En Julio Malabia y Azucena eran las mas populares, Pacifico estubo entre las mas populares de agosto a octubre y Constitucion Topeo en diciembre, puede ser pq se creia que iba a pasar la selección por ahi cuando ganaron el mundial.</p>
+<img data-src="reporte_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><p>En Julio Malabia y Azucena eran las mas populares, Pacifico estuvo entre las mas populares de agosto a octubre y Constitucion Topeo en diciembre, es posible que se deba a que se creia que iba a pasar la selecciónpor ahi cuando ganaron el mundial.</p>
 </section>
 <section id="origen-mas-comun" class="slide level2">
 <h2>Origen mas comun</h2>
@@ -420,6 +420,9 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 </section>
 <section id="franja-horaria" class="slide level2">
 <h2>Franja horaria</h2>
+<p>El horario mas temprano en nuestro conjunto de datos es 05:10 am, y el horario mas tarde es 22:57pm. Por lo cual, decidimos definir 6 franjas horarias equidistante de 3 horas.</p>
+
+<img data-src="reporte_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>Podemos concluir que la franja 5 (17:00hs - 20:00hs) es la que registra mayor cantidad de viajes, seguida por la franja 4 (14:00hs - 17:00hs)</p>
 </section>
 <section id="duracion-de-viajes" class="slide level2">
 <h2>Duracion de viajes</h2>
@@ -427,7 +430,7 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <div class="column" style="width:30%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-14-1.png" width="384"></p>
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-15-1.png" width="384"></p>
 </div>
 </div>
 </div><div class="column" style="width:70%;">
@@ -440,7 +443,7 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <li><p>En abril se ve q hubo una bajada en el tiempo de recorrido maximo y upper fence</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-15-1.png" width="1152"></p>
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-16-1.png" width="1152"></p>
 </div>
 </div></li>
 </ul>
@@ -451,7 +454,7 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <h2>Duracion de Viajes</h2>
 <h3 id="los-viajes-duran-mas-los-fines-de-semana.">Los viajes duran mas los fines de semana.</h3>
 
-<img data-src="reporte_files/figure-revealjs/unnamed-chunk-16-1.png" width="768" class="r-stretch"></section>
+<img data-src="reporte_files/figure-revealjs/unnamed-chunk-17-1.png" width="768" class="r-stretch"></section>
 <section id="el-clima-afecta-la-duracion-de-los-recorridos" class="slide level2">
 <h2>El clima afecta la duracion de los recorridos?</h2>
 <h3 id="veamos-si-las-variables-climaticas-afectan-la-duración-de-los-viajes">Veamos si las variables climaticas afectan la duración de los viajes</h3>
@@ -459,14 +462,14 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-17-1.png" width="768"></p>
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-18-1.png" width="768"></p>
 </div>
 </div>
 <p>Las lluvias no parecen afectar del todo a las duraciones de los viajes.</p>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-18-1.png" width="768"></p>
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-19-1.png" width="768"></p>
 </div>
 </div>
 <p>Hay una leve tendencia hacia mas duracion a mas calor, pero es muy pequeña.</p>
@@ -478,14 +481,32 @@ Agustin Lehmann, Gabriel Szerman, Ernesto Mercado, Ignacio Gallego
 <h1>Usuarios</h1>
 
 </section>
-<section id="cantidad-de-usuarios-unicos" class="slide level2">
-<h2>Cantidad de usuarios unicos</h2>
+<section id="cantidad-de-viajes-vs-cantidad-de-usuarios" class="slide level2">
+<h2>Cantidad de viajes vs cantidad de usuarios</h2>
+
+<img data-src="reporte_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"><p>Podemos observar que el género masculino tiene una mayor proporción de repetición de viajes</p>
 </section>
-<section id="info-de-los-usuarios" class="slide level2">
-<h2>Info de los usuarios</h2>
-</section>
-<section id="preferencias-de-bicis" class="slide level2">
-<h2>Preferencias de bicis</h2>
+<section id="preferencia-de-modelo-de-bicicletas" class="slide level2">
+<h2>Preferencia de modelo de bicicletas</h2>
+<p>Vamos a analizar cuales son los modelos de bicicletas mas utilizados y si hay algún patrón relacionado con otras variables</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+</div>
+</div>
+<p>Analicemos el uso de cada modelo para ver si hay algun dia de la semana en que un modelo sea mas elegido que otro</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+</div>
+</div>
+<p>Veamos si hay algún modelo que sea preferido en base al género.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="reporte_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
+</div>
+</div>
+<p>La proporción parece mantenerse independientemente del dia de la semana.</p>
 <div class="footer footer-default">
 
 </div>
