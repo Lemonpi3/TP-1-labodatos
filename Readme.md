@@ -1,4 +1,16 @@
-Importante: Una vez hecho el clone del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos.Rproj' para conservar las referencias de los path a los archivos .csv 
+### Importante: 
+
+Una vez hecho el clone del repositorio, en RStudio ir a file>open project y abrir 'TP-1 Labo Datos.Rproj' para conservar las referencias de los path a los archivos .csv 
+
+Instalar los siguientes packages:
+
+install.packages("tidyverse")
+install.packages("sf")
+install.packages("showtext")
+install.packages("gridExtra")
+install.packages("ggbreak")
+
+También instalar quarto desde el siguiente link: https://quarto.org/docs/download/
 
 ## La estructura de folders es la siguiente:
 
