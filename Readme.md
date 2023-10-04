@@ -5,9 +5,13 @@ Una vez hecho el clone del repositorio, en RStudio ir a file>open project y abri
 Instalar los siguientes packages:
 
 install.packages("tidyverse")
+
 install.packages("sf")
+
 install.packages("showtext")
+
 install.packages("gridExtra")
+
 install.packages("ggbreak")
 
 También instalar quarto desde el siguiente link: https://quarto.org/docs/download/
