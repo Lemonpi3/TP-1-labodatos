@@ -20,8 +20,7 @@ También instalar quarto desde el siguiente link: https://quarto.org/docs/downlo
 
 ### /Scripts/
 
-Dentro de la carpeta Scripts, cada integrante guarda sus notebooks o scripts en una carpeta propia.
-
+Dentro de la carpeta Scripts, cada integrante guarda sus notebooks o scripts en una carpeta propia, a modo de espacio individual de trabajo (Es como un folder de desarrollo simplemente).
 
 Dentro de esa carpeta, además hay un script llamado 'Limpieza Datasets.R' que realiza una limpieza de los datasets antes de comenzar
 con el análisis exploratorio.
@@ -29,6 +28,11 @@ con el análisis exploratorio.
 ### /Data/ 
 
 Dentro de la carpeta Data se encuentran los datasets (Originales y también los dataset ya preprocesados)
+
+
+### reporte.qmd
+
+Dentro de ese archivo estamos unificando todo el reporte, y una ves finalizado lo compilaremos como archivo .html
 
 ## Plan de trabajo
 
