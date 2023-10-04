@@ -25,4 +25,7 @@ Para evitar pisarnos demasiado la idea es que cada integrante que toma un tema l
 Si al final de cada análisis individual vemos que nos pisamos no hay problema, porque
 la idea es al final del camino unificar todo en un unico notebook, y en ese momento elegir de cada una esas opciones cual es la mas conveniente.
 
-Al final del camino realizaremos un entregable y nos enfocaremos en la parte estética de ese entregable.
+
+
+
+Al final del camino unificaremos todo en el archivo .qmd y nos enfocaremos en la parte estética de el entregable. ( Se pide entregar el proyecto completo con el archivo .qmd y el proyecto compilado como .html)
