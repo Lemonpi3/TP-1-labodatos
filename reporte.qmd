@@ -1034,3 +1034,5 @@ Este análisis nos ha brindado una comprensión valiosa sobre la utilización de
 -  Hay mas viajes con el modelo FIT, y esto mantiene por el día de la semana y por el género.
 
 Esta integración de datos y el análisis resultante pueden ser fundamentales para informar estrategias futuras y mejorar la eficiencia y accesibilidad del sistema Ecobici en la ciudad.
+
+## {background-color="black" background-image="Assets/img/yapa.jpg" background-size="contain"}
