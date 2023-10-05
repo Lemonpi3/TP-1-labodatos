@@ -19,6 +19,7 @@ format:
             transform: translateY(-50%), translateX(-50%);
           }
           </style>
+          
 editor: visual
 execute:
   echo: false
@@ -446,6 +447,97 @@ Por el contrario hay mas viajes en otoño y primavera, siendo la semana del 10 d
 Respecto al análisis que veniamos haciendo, la cantidad total de viajes disminuye en enero y eso va de la mano con esa disminución de amplitud en el horario pico. Como dato llamativo, en invierno esa disminución en el horario pico, si bien también se da y coincide con la disminución en la cantidad total de viajes, esa disminución de amplitud en el horario pico es mucho mas leve.
 :::
 
+## Las lluvias afectan a la cantidad de viajes?
+
+```{r }
+df_bici %>%
+  left_join(df_clima, "fecha") %>%
+  filter(lluvias_mm>0) %>%
+  mutate(
+    mes =lubridate::month(fecha),
+    lluvias = cut(lluvias_mm, breaks= c(0,5,20,50,300))
+    ) %>%
+  group_by(lluvias)%>%
+  summarize(
+    viajes = n_distinct(id_recorrido),
+  ) %>%
+  ggplot(aes(y=viajes, x = lluvias)) +
+  geom_col(fill = "#219ebc") +
+  geom_smooth() +
+  labs (
+    title = "Cantidad de viajes por lluvia",
+    x = "precipitacion (mm)", 
+    y = "Cantidad de Viajes"
+  )+ theme_classic() + theme(text = element_text(size = 32)) +
+  scale_x_discrete(labels = c("0 a 5mm", "5 a 20mm","20 a 50mm","50+mm"))
+```
+Se puede observar que mientras mas llueve hay menos viajes.
+
+## Viajes por dia de semana
+### General
+
+```{r}
+df_bici%>%
+  group_by(dia_semana = weekdays(fecha)) %>%
+  summarize(
+    cantidad_de_viajes = n_distinct(id_recorrido)
+  ) %>%
+  mutate(
+    dia_semana = factor(dia_semana,c("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"))
+  )%>%
+  ggplot(aes(x=dia_semana, y=cantidad_de_viajes)) +
+  geom_col(fill=c("#fb5607","#219ebc","#219ebc","#219ebc","#219ebc","#fb5607","#219ebc"))+
+  labs(
+    y="Cantidad de viajes",
+    title="Cantidad de viajes por dia de la semana",
+    subtitle="Todo 2022"
+  )+ theme_classic() +
+  theme(
+    text = element_text(size=32),
+    axis.title = element_blank()
+  )
+```
+
+Hay menos viajes los fines de semana, veamos si es todos los meses
+
+## Viajes por dia de semana
+### Mes a mes
+
+```{r}
+df_bici %>% 
+  mutate(
+  mes = format(fecha, "%b"),
+  dia_semana = weekdays(fecha)
+) %>%
+  group_by(mes, dia_semana) %>%
+  summarize(
+    cantidad_de_viajes = n_distinct(id_recorrido),
+
+  ) %>%
+  mutate(
+    dia_semana = factor(dia_semana,c("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo")),
+    mes = factor(mes, c("ene.", "feb.", "mar.", "abr.", "may.", "jun.", "jul.", "ago.", "sep.", "oct.", "nov.", "dic."))
+  )%>%
+  ggplot(aes(x=dia_semana, y=cantidad_de_viajes)) +
+  geom_col(aes(fill=dia_semana))+
+  facet_wrap(vars(mes))+
+  labs(
+    y="Cantidad de viajes",
+    title="Cantidad de viajes por dia de la semana",
+    subtitle="Todo 2022",
+    legend.title = "Dia de la semana"
+  ) +
+  theme_classic() +
+  theme(
+    text = element_text(size=32),
+    axis.title = element_blank(),
+    axis.text.x = element_blank()
+  )
+```
+
+No varia mes a mes
+
+
 ## Estaciones de destino
 
 ![](Assets/img/Slide_destino_2022.png)
@@ -494,9 +586,11 @@ grid.arrange(grobs = graphs)
 
 En Julio Malabia y Azucena eran las mas populares, Pacifico estuvo entre las mas populares de agosto a octubre y Constitucion Topeo en diciembre, es posible que se deba a que se creia que iba a pasar la selecciónpor ahi cuando ganaron el mundial.
 
-## Origen mas comun
 
-![](Assets/img/slide_origen_2022.png)
+## {background-color="black" background-image="Assets/img/slide_origen_2022.png" background-size="contain"}
+
+
+<!-- ![](Assets/img/slide_origen_2022.png) -->
 
 ## Estaciones de origen mas comunes, primer semestre
 
@@ -540,7 +634,7 @@ graphs = map(7:12, ~plot_estacion_origen_mes(mes = .x))
 grid.arrange(grobs = graphs)
 ```
 
-En el segundo semestre podemos ver mejor la tendecia q aparecia cuando tomabamos todo el año, a excepcion de julio y septiembre donde las mas usadas fueron Plaza Italia y Hospital de clinicas respectivamente, podemos ver que las 3 estaciones de origen mas usadas (Pacifico, Retiro y Constitucion) dominan en los otros meses.
+En el segundo semestre podemos ver mejor la tendecia que aparecia cuando tomabamos todo el año, a excepcion de julio y septiembre donde las mas usadas fueron Plaza Italia y Hospital de clinicas respectivamente, podemos ver que las 3 estaciones de origen mas usadas (Pacifico, Retiro y Constitucion) dominan en los otros meses.
 
 ```{r}
 theme_set(theme_minimal())
@@ -612,7 +706,7 @@ ggplot(aes(y=duracion_recorrido)) +
 
 -   En invierno el promedio y la media de duracion de recorridos es mas baja.
 
--   En abril se ve q hubo una bajada en el tiempo de recorrido maximo y upper fence
+-   En abril se ve que hubo una bajada en el tiempo de recorrido maximo y upper fence
 
     ```{r , fig.width=12, fig.height=6}
     palette = c("#f64f2a", "#d4cc21", "#80b918", "#71e2e5", "#2d728f", "#ffffff", "#000000")
@@ -652,32 +746,36 @@ ggplot(aes(y=duracion_recorrido)) +
 
 ## Duracion de Viajes
 
-### Los viajes duran mas los fines de semana.
+Los viajes duran mas los fines de semana.
 
 ```{r}
 
 # Crear la columna dia_semana
 df_bici <- df_bici %>%
   mutate(
-    dia_semana = weekdays(fecha_origen_recorrido)
+    dia_semana = weekdays(fecha_origen_recorrido),
+    dia_semana = factor(dia_semana,c("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"))
   )
 
 
 # Crear el gráfico
-ggplot(df_bici, aes(y = duracion_recorrido, fill = dia_semana)) +
+ggplot(df_bici, aes(x=dia_semana, y = duracion_recorrido, fill = dia_semana)) +
   geom_boxplot() +
   scale_y_continuous(breaks = seq(from = 300, to = 3600, by = 600), 
                      labels = function(x) {
                        return(lubridate::seconds_to_period(x))
-                     }) +
-  theme_minimal() +
+                     })  + 
+  theme_light() +
   theme(
+    axis.line.x.bottom = element_line(),
     axis.title = element_blank(),
-    text = element_text(size = 12),
-    panel.background = element_rect(fill = "grey", colour = "#0b132b"),
+    axis.text.x = element_text(),
+    axis.ticks.x = element_line(),
+    text = element_text(size = 32),
+    panel.background = element_rect(fill = "grey90", colour = "#0b132b"),
     legend.position = "none"
-  ) + 
-  scale_x_discrete(labels = c("lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"))
+  ) +
+  scale_fill_manual(values=c("#219ebc", "#219ebc", "#219ebc", "#219ebc", "#219ebc", "#ffb703", "#ffb703"))
 
 ```
 
@@ -851,7 +949,7 @@ ggplot(modelo_counts, aes(x = modelo_bicicleta, y = count, fill = modelo_bicicle
   scale_fill_manual(values = c("FIT" = "orange", "ICONIC" = "#6baed6", "OTHER" = "#78c679"))  # Colores personalizados
 
 ```
-No se ve diferencia mas que hay mas Fit que Iconic.
+No se ve diferencia mas que el modelo mas utilizado es el modelo FIT.
 
 ## Preferencia de modelo de bicicletas
 ### Por dia de la semana
@@ -916,3 +1014,23 @@ ggplot(modelo_genero_counts, aes(x = modelo_bicicleta, y = count, fill = genero)
 ```
 La proporción parece mantenerse independientemente al genero.
 
+
+## Conclución
+
+Este análisis nos ha brindado una comprensión valiosa sobre la utilización del sistema Ecobici en la Ciudad de Buenos Aires durante el año 2022. A continuación, se presentan algunos hallazgos significativos derivados del análisis:
+
+-  La franja horaria con mayor concentración de viajes es entre las 16:00 y las 18:00 horas. Este patrón se repite en todos los meses, excepto en enero. Es probable que esto se deba a la cantidad de lluvias, así como a un aumento significativo de la temperatura, factores que hemos observado que influyen en la cantidad de viajes. Es posible que las vacaciones también tengan un impacto temporal, aunque no disponemos de datos sobre esta variable.
+
+-  La cantidad de viajes es mayor durante las temporadas de otoño y primavera, mientras que disminuye durante el invierno y el verano. Según nuestras observaciones, tanto las temperaturas extremadamente altas como bajas afectan la cantidad de viajes.
+
+-  La mayoría de los viajes se concentran en la zona noreste y en el centro de la ciudad.
+
+-  Las estaciones de salida más comunes son Constitución, Retiro y Pacífico, lo que indica un uso significativo de la combinación tren-bicicleta.
+
+-  La duración promedio de un viaje es de 18 minutos y 42 segundos. Es más probable que las personas de género masculino realicen viajes repetidos.
+
+-  Durante los fines de semana, hay menos viajes, pero estos son de mayor duración.
+
+-  Hay mas viajes con el modelo FIT, y esto mantiene por el día de la semana y por el género.
+
+Esta integración de datos y el análisis resultante pueden ser fundamentales para informar estrategias futuras y mejorar la eficiencia y accesibilidad del sistema Ecobici en la ciudad.
