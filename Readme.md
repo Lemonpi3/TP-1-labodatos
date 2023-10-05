@@ -34,18 +34,7 @@ Dentro de la carpeta Data se encuentran los datasets (Originales y también los 
 
 Dentro de ese archivo estamos unificando todo el reporte, y una vez finalizado lo compilaremos como archivo .html
 
-## Plan de trabajo
+## Resultado del reporte
 
+El resultado del análisis se encuentra dentro del archivo /reporte.html
 
-El plan será realizar incialmente la limpieza, y un análisis exploratorio individual de forma ágil.
-
-Para evitar pisarnos demasiado la idea es que cada integrante que toma un tema lo escriba en el grupo de discord
-
-
-Si al final de cada análisis individual vemos que nos pisamos no hay problema, porque
-la idea es al final del camino unificar todo en un unico notebook, y en ese momento elegir de cada una esas opciones cual es la mas conveniente.
-
-
-
-
-Al final del camino unificaremos todo en el archivo .qmd y nos enfocaremos en la parte estética de el entregable. ( Se pide entregar el proyecto completo con el archivo .qmd y el proyecto compilado como .html)
