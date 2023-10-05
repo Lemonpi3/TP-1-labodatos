@@ -1015,7 +1015,7 @@ ggplot(modelo_genero_counts, aes(x = modelo_bicicleta, y = count, fill = genero)
 La proporción parece mantenerse independientemente al genero.
 
 
-## Conclución
+## Conclusión
 
 Este análisis nos ha brindado una comprensión valiosa sobre la utilización del sistema Ecobici en la Ciudad de Buenos Aires durante el año 2022. A continuación, se presentan algunos hallazgos significativos derivados del análisis:
 
