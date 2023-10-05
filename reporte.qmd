@@ -628,6 +628,37 @@ Hay una leve tendencia hacia mas duracion a mas calor, pero es muy pequeña.
 :::
 :::
 
+##La temperatura afecta la cantidad de viajes diarios?
+
+```{r}
+
+df_join <- df_bici %>%
+  inner_join(df_clima,by="fecha") %>%
+  select(temp_prom,temp_max,temp_min) %>%
+  mutate(temp_prom= round(temp_prom),
+         temp_max=round(temp_max),
+         temp_min=round(temp_min))
+
+ggplot(df_join,mapping=aes(x=temp_prom))+
+  geom_histogram(mapping=aes(x=temp_prom),stat = "count",binwidth = 5,color="black",fill="aquamarine")+
+  labs(title = "Viajes segun temperatura promedio",x="Temperatura (°C)",y="Cantidad de viajes")
+
+ggplot(df_join,mapping=aes(x=temp_max))+
+  geom_histogram(bins=5,stat = "count",color="black",fill="brown1")+
+  labs(title = "Viajes segun temperatura máxima",x="Temperatura (°C)",y="Cantidad de viajes")
+
+ggplot(df_join,mapping=aes(x=temp_min))+
+  geom_histogram(stat = "count",fill="turquoise",color="black")+
+  labs(title = "Viajes segun temperatura mínima",x="Temperatura (°C)",y="Cantidad de viajes")
+
+
+```
+
+En conclusión, se puede ver una relación entre la temperatura y la cantidad de viajes ese día.
+
+En particular, se puede observar que si la temperatura promedio es menor a 10°C o mayor a 25°C, la cantidad de viajes ese día disminuye.
+
+
 # Usuarios
 
 ## Cantidad de viajes vs cantidad de usuarios
