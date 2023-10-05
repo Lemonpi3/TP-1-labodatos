@@ -30,10 +30,6 @@ con el análisis exploratorio.
 Dentro de la carpeta Data se encuentran los datasets (Originales y también los dataset ya preprocesados)
 
 
-### /reporte.qmd
-
-Dentro de ese archivo estamos unificando todo el reporte, y una vez finalizado lo compilaremos como archivo .html
-
 ## Resultado del reporte
 
 El resultado del análisis se encuentra dentro del archivo /reporte.html
